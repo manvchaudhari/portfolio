@@ -154,10 +154,10 @@ body {
 <div class="arena" id="arena">
 
   <header class="hud">
-    <div class="fighter p1">
+    <div class="fighter p1" id="p1">
       <span class="name">Manav</span>
-      <div class="bar"><div class="fill" style="width:100%"></div></div>
-      <span class="sub-name">energy: caffeinated</span>
+      <div class="bar"><div class="fill" id="p1fill" style="width:100%"></div></div>
+      <span class="sub-name" id="p1sub">energy: caffeinated</span>
     </div>
     <div class="center">
       <div class="rd"><span class="rd-label">Round</span><span class="rd-num" id="roundNum">1/5</span></div>
@@ -197,7 +197,9 @@ body {
   var arena = $("arena"), word = $("word"), taunt = $("taunt"), how = $("how"), rematch = $("rematch"),
       p2Name = $("p2Name"), p2fill = $("p2fill"), ghost = $("ghost"), roundNum = $("roundNum"), comboEl = $("combo"),
       pctEl = $("pct"), buildFill = $("buildFill"), buildLabel = $("buildLabel"),
-      banner = $("banner"), flash = $("flash"), fx = $("fx"), live = $("live");
+      banner = $("banner"), flash = $("flash"), fx = $("fx"), live = $("live"),
+      p1 = $("p1"), p1fill = $("p1fill"), p1sub = $("p1sub");
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function irnd(a, b) { return Math.round(rnd(a, b)); }
@@ -338,16 +340,70 @@ body {
     });
   }
 
+  /* ---------- finale: the last bug lands a blow, you go down (not K.O.), recover, restart ---------- */
   function finish() {
     over = true; locked = true;
-    buildWord("GG");
-    word.animate(reduce ? [{ opacity: 0 }, { opacity: 1 }] : [{ transform: "scale(.2) rotate(-12deg)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 500, easing: "cubic-bezier(.2,1.5,.4,1)" });
-    taunt.hidden = false; taunt.textContent = "Fight over. The real portfolio is still loading.";
-    how.hidden = true; rematch.hidden = false;
-    p2Name.textContent = "Bugs"; roundNum.textContent = "GG";
+    buildWord("BUGS");
+    p2Name.textContent = "Bugs"; roundNum.textContent = "BOSS";
+    ghost.style.transition = "none"; setHP(100); void ghost.offsetWidth; ghost.style.transition = "";
+    how.hidden = true; rematch.hidden = true;
+    taunt.hidden = false; taunt.textContent = "One last bug survived. Surprise.";
     buildLabel.textContent = "The last 1% is the hardest";
     updatePct();
-    live.textContent = "All five rounds cleared. Good game. Portfolio build stuck at 99 percent.";
+    live.textContent = "All five rounds cleared. One last bug strikes back.";
+    word.animate(reduce ? [{ opacity: 0 }, { opacity: 1 }] : [{ transform: "scale(.2) rotate(-12deg)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 500, easing: "cubic-bezier(.2,1.5,.4,1)" });
+
+    var fallAnim = null;
+    sleep(1300).then(function () {
+      // the bug lunges at you
+      if (!reduce) word.animate([
+        { transform: "none" },
+        { transform: "translateX(-6vw) scale(.9) rotate(3deg)", offset: .25 },
+        { transform: "translateX(-34vw) scale(1.3) rotate(-7deg)", offset: .6 },
+        { transform: "none" }
+      ], { duration: 650, easing: "ease-in-out" });
+      return sleep(reduce ? 100 : 400);
+    }).then(function () {
+      // impact on the player
+      var r = p1.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      flash.animate([{ opacity: .95 }, { opacity: 0 }], { duration: 380 });
+      shake(); setTimeout(shake, 120);
+      star(cx, cy); star(cx - 40, cy + 18); star(cx + 50, cy - 12);
+      floatNum("-94", cx, cy - 20);
+      p1fill.style.transition = "width .35s ease-out"; p1fill.style.width = "6%";
+      p1sub.textContent = "energy: ouch";
+      live.textContent = "Bugs lands a heavy blow. Manav is down, but not out.";
+      if (!reduce) {
+        p1.style.transformOrigin = "0 100%";
+        fallAnim = p1.animate([
+          { transform: "none", filter: "none" },
+          { transform: "translateX(-16px) rotate(-7deg)", filter: "brightness(2)", offset: .25 },
+          { transform: "translateY(56px) rotate(-14deg)", filter: "grayscale(.8)" }
+        ], { duration: 650, easing: "ease-out", fill: "forwards" });
+      }
+      return sleep(700);
+    }).then(function () {
+      taunt.textContent = "Down… but not out.";
+      return announce("Down!", 1300);
+    }).then(function () {
+      // get back up, health refills
+      taunt.textContent = "Back on your feet. Health restored.";
+      p1sub.textContent = "energy: caffeinated";
+      p1fill.style.transition = "width 1.6s ease-in-out"; p1fill.style.width = "100%";
+      if (fallAnim) fallAnim.cancel();
+      if (!reduce) p1.animate([
+        { transform: "translateY(56px) rotate(-14deg)", filter: "grayscale(.8)" },
+        { transform: "translateY(-10px) rotate(2deg)", filter: "none", offset: .7 },
+        { transform: "none", filter: "none" }
+      ], { duration: 700, easing: "ease-out" });
+      return sleep(2000);
+    }).then(function () {
+      // everything restarts
+      p1fill.style.transition = ""; p1.style.transformOrigin = "";
+      over = false; cleared = 0; combo = 0; how.hidden = false;
+      buildLabel.textContent = "Portfolio build";
+      load(0);
+    });
   }
 
   rematch.addEventListener("click", function () {
