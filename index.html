@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>manav.gg – under construction</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2064%2064%27%3E%3Crect%20width=%2764%27%20height=%2764%27%20rx=%2712%27%20fill=%27%23e4311f%27/%3E%3Cpolygon%20points=%2759.0,32.0%2045.5,35.6%2055.4,45.5%2041.9,41.9%2045.5,55.4%2035.6,45.5%2032.0,59.0%2028.4,45.5%2018.5,55.4%2022.1,41.9%208.6,45.5%2018.5,35.6%205.0,32.0%2018.5,28.4%208.6,18.5%2022.1,22.1%2018.5,8.6%2028.4,18.5%2032.0,5.0%2035.6,18.5%2045.5,8.6%2041.9,22.1%2055.4,18.5%2045.5,28.4%27%20fill=%27%23ffd400%27%20stroke=%27%230b0b0d%27%20stroke-width=%273%27%20stroke-linejoin=%27round%27/%3E%3C/svg%3E">
 <meta name="description" content="manav.gg is under construction. Squash a few bugs to speed things up.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,13 +44,13 @@ body {
 /* ---------- HUD ---------- */
 .hud {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: 1fr auto 1fr; gap: clamp(8px, 2vw, 28px); align-items: start;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: clamp(8px, 2vw, 28px); align-items: start;
   padding: clamp(10px, 2vh, 20px) clamp(12px, 3vw, 40px) 0;
 }
 .fighter { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 .p2 { align-items: flex-end; text-align: right; }
 .name {
-  font: 900 clamp(20px, 4vh, 40px)/1 var(--display); text-transform: uppercase; letter-spacing: .04em;
+  font: 900 clamp(18px, min(4vh, 7vw), 40px)/1 var(--display); text-transform: uppercase; letter-spacing: .04em;
   text-shadow: 2px 2px 0 var(--ink); white-space: nowrap; overflow: hidden; text-overflow: clip; max-width: 100%;
 }
 .bar {
@@ -137,8 +138,15 @@ body {
 
 /* short screens: trim extras so nothing needs a scrollbar */
 @media (max-height: 560px) { .how, .sub-name { display: none; } }
-@media (max-height: 400px) { .taunt { display: none; } .mail { display: none; } }
-@media (max-width: 520px) { .mail { display: none; } .build-label { font-size: 10px; } }
+@media (max-height: 400px) { .taunt { display: none; } .email { display: none; } }
+@media (max-width: 760px) { .email { display: none; } }
+@media (max-width: 520px) {
+  .build { flex-wrap: wrap; row-gap: 8px; }
+  .build-label { order: 1; flex: 1 1 0; white-space: normal; font-size: 11px; line-height: 1.2; }
+  .pct { order: 2; }
+  .track { order: 3; flex: 1 0 100%; }
+  .x { order: 4; }
+}
 @media (prefers-reduced-motion: reduce) { .how { animation: none; } }
 </style>
 </head>
@@ -165,7 +173,7 @@ body {
   <main class="stage">
     <div class="word" id="word" aria-hidden="true"></div>
     <p class="taunt" id="taunt"></p>
-    <h1 class="headline">manav.gg is under construction.</h1>
+    <h1 class="headline">the site’s under construction</h1>
     <p class="how" id="how">Tap, click or press space to attack. Every bug you squash speeds things up.</p>
     <button class="rematch" id="rematch" type="button" hidden>Rematch</button>
   </main>
@@ -174,8 +182,7 @@ body {
     <span class="build-label" id="buildLabel">Portfolio build</span>
     <div class="track"><i id="buildFill"></i></div>
     <span class="pct" id="pct">0%</span>
-    <!-- CHANGE: your email (or delete this link if you want no links at all) -->
-    <a href="https://x.com/manvchaudhari">manavchaudhari</a>
+    <a class="mail x" href="https://x.com/manvchaudhari" target="_blank" rel="noopener">𝕏 @manvchaudhari</a>
   </footer>
 
   <div class="banner" id="banner" aria-hidden="true"></div>
