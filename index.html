@@ -116,7 +116,12 @@ body {
 .track { position: relative; flex: 1; height: clamp(12px, 2vh, 18px); border: 2px solid var(--white); transform: skewX(-16deg); overflow: hidden; min-width: 40px; }
 .track > i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--gold); transition: width .4s ease; }
 .pct { font: 900 clamp(20px, 3.4vh, 32px)/1 var(--display); color: var(--gold); min-width: 3ch; text-align: right; }
-.mail { color: var(--gold); font-weight: 700; font-size: clamp(11px, 1.8vh, 15px); text-underline-offset: 4px; white-space: nowrap; }
+.mail {
+  display: inline-flex; align-items: center; gap: .4em; padding-bottom: 3px;
+  color: var(--gold); font-weight: 700; font-size: clamp(11px, 1.8vh, 15px);
+  text-decoration: none; border-bottom: 2px solid currentColor; white-space: nowrap;
+}
+.mail svg { width: 1.4em; height: 1.4em; flex: none; }
 
 /* ---------- overlays ---------- */
 .banner {
@@ -182,7 +187,8 @@ body {
     <span class="build-label" id="buildLabel">Portfolio build</span>
     <div class="track"><i id="buildFill"></i></div>
     <span class="pct" id="pct">0%</span>
-    <a class="mail x" href="https://x.com/manvchaudhari" target="_blank" rel="noopener">𝕏 @manvchaudhari</a>
+    <a class="mail email" href="mailto:hello@manav.gg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 7.5l9 6.5 9-6.5"/></svg>hello@manav.gg</a>
+    <a class="mail x" href="https://x.com/manvchaudhari" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@manvchaudhari</a>
   </footer>
 
   <div class="banner" id="banner" aria-hidden="true"></div>
