@@ -144,13 +144,12 @@ body {
 /* short screens: trim extras so nothing needs a scrollbar */
 @media (max-height: 560px) { .how, .sub-name { display: none; } }
 @media (max-height: 400px) { .taunt { display: none; } .email { display: none; } }
-@media (max-width: 760px) { .email { display: none; } }
-@media (max-width: 520px) {
-  .build { flex-wrap: wrap; row-gap: 8px; }
+@media (max-width: 760px) {
+  .build { flex-wrap: wrap; row-gap: 8px; column-gap: 20px; }
   .build-label { order: 1; flex: 1 1 0; white-space: normal; font-size: 11px; line-height: 1.2; }
   .pct { order: 2; }
   .track { order: 3; flex: 1 0 100%; }
-  .x { order: 4; }
+  .email, .x { order: 4; }
 }
 @media (prefers-reduced-motion: reduce) { .how { animation: none; } }
 </style>
