@@ -38,15 +38,17 @@ body{display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)
 
 /* left sidebar */
 .brand{font-family:var(--serif);font-size:30px;line-height:1;letter-spacing:-.01em}
-.contact{display:flex;flex-direction:column;gap:4px;width:100%;border:1.5px solid var(--line);border-radius:16px;padding:10px;background:var(--panel)}
-.contact a{position:relative;display:flex;align-items:center;gap:12px;padding:12px 14px 18px;border-radius:10px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:700;outline:none}
-.contact a::after{content:'';position:absolute;left:14px;right:14px;bottom:8px;height:5px;border-radius:2px;background:repeating-linear-gradient(-45deg,var(--hz) 0 5px,#111 5px 10px);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
-.contact a svg{width:16px;height:16px;flex:none;transition:transform .35s cubic-bezier(.3,1.7,.5,1)}
-.contact a span{transition:transform .3s}
-.contact a:hover::after,.contact a:focus-visible::after{transform:scaleX(1)}
-.contact a:hover svg,.contact a:focus-visible svg{transform:rotate(-16deg) scale(1.25)}
-.contact a:hover span,.contact a:focus-visible span{transform:translateX(4px)}
-.theme{margin-top:auto;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:none;color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:border-color .2s}
+.contact{display:flex;flex-direction:column;gap:0;width:100%;border:1.5px solid var(--line);border-radius:16px;padding:6px;background:var(--panel)}
+.top{display:flex;align-items:center;justify-content:space-between;width:100%}
+.contact a{display:flex;align-items:center;gap:12px;padding:15px 14px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:700;outline:none}
+.contact a+a{border-top:1px solid var(--line2)}
+.contact a svg{width:16px;height:16px;flex:none}
+.contact a span{position:relative}
+.contact a span::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.contact a .arr{margin-left:auto;width:13px;height:13px;opacity:0;transform:translate(-6px,6px);transition:opacity .25s,transform .35s cubic-bezier(.2,.8,.2,1)}
+.contact a:hover span::after,.contact a:focus-visible span::after{transform:scaleX(1)}
+.contact a:hover .arr,.contact a:focus-visible .arr{opacity:1;transform:none}
+.theme{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:none;color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:border-color .2s}
 .theme svg{transition:transform .5s cubic-bezier(.3,1.5,.5,1)}
 .theme:hover,.theme:focus-visible{border-color:var(--hz);outline:none}
 .theme:hover svg,.theme:focus-visible svg{transform:rotate(90deg)}
@@ -83,14 +85,15 @@ h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,min(9.2vw,11vh)
 .b4{grid-column:1/3;height:10px}.b5,.b6,.b7{grid-column:span 2;height:18px}.b8{grid-column:1/7;height:6px}
 
 /* game */
-.table{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:0 12px;min-height:0}
+.table{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:8px;padding:0 12px;min-height:0}
+.table.ended .wait,.table.ended .opp{display:none}
 .wait{font-size:13px;color:var(--muted);font-weight:500}
 .opp{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-weight:500}
 .opp .fan{display:flex}
 .back{width:calc(var(--cw)*.42);height:calc(var(--cw)*.62);border-radius:4px;background:#1a1a22;border:1.5px solid color-mix(in srgb,var(--ink) 65%,transparent);margin-left:calc(var(--cw)*-.24);position:relative}
 .back:first-child{margin-left:0}
 .back::after{content:'';position:absolute;inset:22% 18%;border-radius:50%;background:#d93a3a;transform:rotate(28deg)}
-.stage{display:flex;align-items:center;gap:calc(var(--cw)*.4)}
+.stage{display:flex;align-items:center;gap:calc(var(--cw)*.4);margin-bottom:20px}
 .slot{position:relative;width:var(--cw);height:calc(var(--cw)*1.5)}
 .slot small{position:absolute;left:0;right:0;top:calc(100% + 6px);text-align:center;font-size:11px;color:var(--muted);font-weight:500}
 button.deck{border:0;background:none;color:inherit;cursor:pointer;font:inherit}
@@ -109,6 +112,11 @@ button.deck{border:0;background:none;color:inherit;cursor:pointer;font:inherit}
 .say small{display:block;margin-top:3px;font-size:12px;color:var(--muted);min-height:1.2em}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}}
 .again{margin-top:6px;font:700 13px var(--sans);color:var(--bg);background:var(--ink);border:0;border-radius:99px;padding:7px 16px;cursor:pointer}
+.say.end{max-width:min(92vw,36em);min-height:0}
+.say.end p{font-family:var(--serif);font-weight:400;font-size:clamp(30px,5.2vh,52px);line-height:1.05;letter-spacing:-.01em}
+.say.end small{margin-top:10px;font-size:clamp(14px,2.2vh,17px);line-height:1.4}
+.say.end .again{margin-top:16px;font-size:clamp(15px,2.4vh,18px);padding:.8em 2.2em;transition:transform .2s,box-shadow .2s}
+.say.end .again:hover,.say.end .again:focus-visible{transform:translateY(-2px);box-shadow:0 6px 0 var(--hz);outline:none}
 .again[hidden]{display:none}
 .hand{flex:none;display:flex;justify-content:center;align-items:flex-end;height:calc(var(--cw)*1.5 + 48px);padding:0 8px 26px;position:relative;z-index:1}
 .hand .card{transform-origin:50% 130%;transform:translateY(var(--dy,0)) rotate(var(--rot,0deg));transition:transform .18s,opacity .2s,filter .2s}
@@ -144,7 +152,9 @@ canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index
   .brand{font-size:24px;margin-right:auto}
   .contact{order:2;flex-direction:row;width:auto;gap:8px;border:0;padding:0;background:none}
   .contact a{width:34px;height:34px;padding:0;justify-content:center;border:1.5px solid var(--line);border-radius:50%}
-  .contact a span,.contact a::after{display:none}
+  .contact a span,.contact a .arr{display:none}
+  .contact a+a{border-top:1.5px solid var(--line)}
+  .top{display:contents}
   .theme{order:3;margin-top:0}
   .hero{padding-top:10px}
   .rule{display:none}
@@ -152,13 +162,17 @@ canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index
   .right{flex-direction:row;align-items:stretch;gap:10px;padding-top:10px;padding-bottom:0}
   .panel{padding:8px 12px;border-radius:12px}
   .right .panel:first-child{flex:1}
-  .right .build{width:132px;flex:none}
+  .right .build{width:112px;flex:none}
   .panel h2{margin-bottom:6px;font-size:12px}
   .who b{font-size:28px}.who span{font-size:12px}
   .rounds{display:none}
   .pg{padding:5px;gap:3px}
-  .b5,.b6,.b7{height:10px}.b3{grid-row:2/4}
+  .b0{height:5px}.b1{height:6px}.b2{height:5px}.b4{height:6px}.b5,.b6,.b7{height:8px}.b8{height:4px}.b3{grid-row:2/4}
+  :root{--cw:clamp(44px,min(12vw,8.2vh),72px)}
+  h1{font-size:clamp(30px,min(9.2vw,7vh),46px)}
+  .win .bar{padding:3px 5px}
 }
+@media (max-width:760px) and (max-height:820px){.lede,.wait{display:none}}
 @media (max-height:640px){.lede,.wait,.rule{display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
 </style>
@@ -167,15 +181,15 @@ canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index
 <div class="hz"></div>
 <div class="shell">
   <aside class="side left">
-    <div class="brand">manav.uno</div>
-    <nav class="contact" aria-label="Contact">
-      <a href="https://x.com/manvchaudhari" target="_blank" rel="noopener noreferrer" aria-label="X profile: manvchaudhari" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>@manvchaudhari</span></a>
-      <a href="mailto:hello@manav.uno" aria-label="Email hello@manav.uno" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>hello@manav.uno</span></a>
-    </nav>
+    <div class="top"><div class="brand">manav.uno</div>
     <button class="theme" id="theme" aria-label="Switch between light and dark mode" title="Switch theme">
       <svg class="sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       <svg class="moon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-    </button>
+    </button></div>
+    <nav class="contact" aria-label="Contact">
+      <a href="https://x.com/manvchaudhari" target="_blank" rel="noopener noreferrer" aria-label="X profile: manvchaudhari" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>@manvchaudhari</span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+      <a href="mailto:hello@manav.uno" aria-label="Email hello@manav.uno" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>hello@manav.uno</span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </nav>
   </aside>
 
   <header class="hero">
@@ -241,7 +255,7 @@ function mk(c){var e=document.createElement('div');e.className='card'+(c.c==='k'
   var s=c.v==='W'?'★':sym(c.v),
       mid=c.c==='k'?'<div class="quad">'+(c.v==='+4'?'+4':'')+'</div>':'<span class="mid'+(c.v.length>1||c.v==='S'||c.v==='R'?' sm':'')+'">'+s+'</span>';
   e.innerHTML='<div class="oval">'+mid+'</div><span class="tl">'+s+'</span><span class="br">'+s+'</span>';return e}
-function say(t,n){var p=document.createElement('p');p.id='say';p.textContent=t;sayEl.replaceWith(p);sayEl=p;note.textContent=n||''}
+function say(t,n,end){var p=document.createElement('p');p.id='say';p.textContent=t;sayEl.replaceWith(p);sayEl=p;note.textContent=n||'';note.parentNode.className='say'+(end?' end '+end:'');note.closest('.table').classList.toggle('ended',!!end)}
 
 function render(){
   hand.innerHTML='';
@@ -361,8 +375,8 @@ function botPlay(c){
 function endRound(who){
   over=true;unoPending=false;
   var gain=pts(who==='p'?bh:ph);score[who]+=gain;won[who]++;renderScore();
-  if(who==='p'){wins++;var n=updateBuild();say('You won the round and scored '+gain+'. +3 to the build.',n||'');burst()}
-  else say('Bot wins this round and scores '+gain+'.','Win a round to speed up the build.');
+  if(who==='p'){wins++;var n=updateBuild();say('You won the round!','+'+gain+' points · +3 to the build'+(n?'. '+n:'.'),'win');burst()}
+  else say('Bot takes this round.','Bot scores '+gain+'. Win a round to speed up the build.','lose');
   again.hidden=false;render()}
 function start(){
   deck=mkDeck();disc=[];ph=[];bh=[];draw(7,ph);draw(7,bh);
